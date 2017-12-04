@@ -41,7 +41,7 @@ def main(args):
 
     t0 = time()
     wlk_relabel_and_dump_memory_version(graph_files, max_h=wlk_h, node_label_attr_name=label_filed_name)
-    print 'dumped sg2vec sentences in {} sec.'.format(time() - t0)
+    logging.info('dumped sg2vec sentences in {} sec.'.format(time() - t0))
 
     t0 = time()
     embedding_fname = train_skipgram(corpus_dir, wl_extn, learning_rate, embedding_size, num_negsample,
@@ -71,7 +71,7 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    args.add_argument('-e',"--epochs", default=500, type=int,
+    args.add_argument('-e',"--epochs", default=1000, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
     args.add_argument('-d',"--embedding_size", default=1024, type=int,
@@ -83,10 +83,11 @@ def parse_args():
     args.add_argument('-lr', "--learning_rate", default=0.3, type=float,
                       help="Learning rate to optimize the loss function")
 
-    args.add_argument("--wlk_h", default=3, type=int, help="Height of WL kernel (i.e., degree of rooted subgraph features to be considered for representation learning)")
+    args.add_argument("--wlk_h", default=3, type=int, help="Height of WL kernel (i.e., degree of rooted subgraph "
+                                                           "features to be considered for representation learning)")
 
-    args.add_argument('-lf', '--label_filed_name', default='Label', help='Label field to be used for coloring nodes in graphs '
-                                                                  'using WL kenrel')
+    args.add_argument('-lf', '--label_filed_name', default='Label', help='Label field to be used '
+                                                                         'for coloring nodes in graphs using WL kenrel')
 
     return args.parse_args()
 

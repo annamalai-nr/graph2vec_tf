@@ -39,10 +39,10 @@ def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     params = {'C':[0.01,0.1,1,10,100,1000]}
     classifier = GridSearchCV(LinearSVC(), params, cv=5, scoring='f1',verbose=1)
     classifier.fit(X_train,Y_train)
-    print 'best classifier model\'s hyperparamters', classifier.best_params_
+    logging.info('best classifier model\'s hyperparamters', classifier.best_params_)
 
     '''
-    print "Best parameters set found on development set:"
+    logging.info("Best parameters set found on development set:"
     print ''
     print classifier.best_params_
     print ''
@@ -64,9 +64,9 @@ def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     Y_pred = classifier.predict(X_test)
 
     acc = accuracy_score(Y_test, Y_pred)
-    print 'Linear SVM accuracy: {}'.format(acc)
+    logging.info('Linear SVM accuracy: {}'.format(acc))
 
-    print classification_report(Y_test, Y_pred)
+    logging.info(classification_report(Y_test, Y_pred))
 
 
 def perform_classification (corpus_dir, extn, embedding_fname, class_labels_fname):
