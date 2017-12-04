@@ -29,7 +29,7 @@ def subgraph2vec_tokenizer (s):
 
 def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     '''
-    Classifier with graph embeddings
+    Classifier with WL kernel
     :param X_train: training feature vectors
     :param X_test: testing feature vectors
     :param Y_train: training set labels
@@ -61,8 +61,10 @@ def perform_classification (corpus_dir, extn, embedding_fname, class_labels_fnam
 
     wlk_files = get_files(corpus_dir, extn)
 
-    seed = randint(0, 1000)
+    Y = np.array(get_class_labels(wlk_files, class_labels_fname))
+    logging.info('Y (label) matrix shape: {}'.format(Y.shape))
 
+    seed = randint(0, 1000)
 
     with open(embedding_fname,'r') as fh:
         graph_embedding_dict = json.load(fh)
