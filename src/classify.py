@@ -5,11 +5,9 @@ from sklearn.preprocessing import Normalizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.svm import SVC,LinearSVC
-import gensim
 from random import randint
 import numpy as np
 import logging
-from scipy.sparse import csr_matrix
 from sklearn.model_selection import GridSearchCV
 
 from utils import get_class_labels
@@ -21,15 +19,15 @@ def subgraph2vec_tokenizer (s):
     '''
     Tokenize the string from subgraph2vec sentence (i.e. <target> <context1> <context2> ...). Just target is to be used
     and context strings to be ignored.
-    :param s: context of subgraph2vec file.
-    :return: List of targets from subgraph2vec file.
+    :param s: context of graph2vec file.
+    :return: List of targets from graph2vec file.
     '''
     return [line.split(' ')[0] for line in s.split('\n')]
 
 
 def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     '''
-    Classifier with WL kernel
+    Classifier with graph embeddings
     :param X_train: training feature vectors
     :param X_test: testing feature vectors
     :param Y_train: training set labels

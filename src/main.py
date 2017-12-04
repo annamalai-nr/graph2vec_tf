@@ -58,7 +58,7 @@ def parse_args():
     Usual pythonic way of parsing command line arguments
     :return: all command line arguments read
     '''
-    args = argparse.ArgumentParser("subgraph2vec")
+    args = argparse.ArgumentParser("graph2vec")
     args.add_argument("-c","--corpus", default = "../data/kdd_datasets/ptc",
                       help="Path to directory containing graph files to be used for graph classification or clustering")
 
@@ -75,7 +75,7 @@ def parse_args():
                       help="Number of iterations the whole dataset of graphs is traversed")
 
     args.add_argument('-d',"--embedding_size", default=1024, type=int,
-                      help="Intended subgraph embedding size to be learnt")
+                      help="Intended graph embedding size to be learnt")
 
     args.add_argument('-neg', "--num_negsample", default=10, type=int,
                       help="Number of negative samples to be used for training")
