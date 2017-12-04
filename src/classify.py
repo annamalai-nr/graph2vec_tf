@@ -29,7 +29,7 @@ def subgraph2vec_tokenizer (s):
 
 def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     '''
-    Classifier with WL kernel
+    Classifier with graph embeddings
     :param X_train: training feature vectors
     :param X_test: testing feature vectors
     :param Y_train: training set labels
@@ -40,26 +40,6 @@ def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     classifier = GridSearchCV(LinearSVC(), params, cv=5, scoring='f1',verbose=1)
     classifier.fit(X_train,Y_train)
     logging.info('best classifier model\'s hyperparamters', classifier.best_params_)
-
-    '''
-    logging.info("Best parameters set found on development set:"
-    print ''
-    print classifier.best_params_
-    print ''
-    print "Grid scores on development set:"
-    print ''
-    means = classifier.cv_results_['mean_test_score']
-    stds = classifier.cv_results_['std_test_score']
-    for mean, std, params in zip(means, stds, classifier.cv_results_['params']):
-        print("%0.3f (+/-%0.03f) for %r"
-              % (mean, std * 2, params))
-    print ''
-    print "Detailed classification report:"
-    print ''
-    print "The model is trained on the full development set."
-    print "The scores are computed on the full evaluation set."
-    print ''
-    '''
 
     Y_pred = classifier.predict(X_test)
 
@@ -80,27 +60,8 @@ def perform_classification (corpus_dir, extn, embedding_fname, class_labels_fnam
     '''
 
     wlk_files = get_files(corpus_dir, extn)
-    logging.info('Loaded {} graph WL kernel files for performing classification'.format(len(wlk_files)))
-    c_vectorizer = CountVectorizer(input='filename',
-                                   tokenizer=subgraph2vec_tokenizer,
-                                   lowercase=False)
-    normalizer = Normalizer()
-
-    X = c_vectorizer.fit_transform(wlk_files)
-    X = normalizer.fit_transform(X)
-    logging.info('X (sample) matrix shape: {}'.format(X.shape))
-
-
-    Y = np.array(get_class_labels(wlk_files, class_labels_fname))
-    logging.info('Y (label) matrix shape: {}'.format(Y.shape))
 
     seed = randint(0, 1000)
-
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.1, random_state=seed)
-    logging.info('Train and Test matrix shapes: {}, {}, {}, {} '.format(X_train.shape, X_test.shape,
-                                                                        Y_train.shape, Y_test.shape))
-
-    linear_svm_classify(X_train, X_test, Y_train, Y_test)
 
 
     with open(embedding_fname,'r') as fh:
